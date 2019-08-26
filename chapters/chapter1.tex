@@ -97,11 +97,11 @@ Using this initial classifier, some points will be correctly classified, and som
 We calculate the errors and change the weights of the misclassified ones, and normalize the weights afterwards, to ensure that the sum of the weights is always the same.
 This results in the correctly classified observations having a reduced weight, and with misclassified observations having an increased weight.
 In the following iteration, we apply again a weak learner which minimizes the weighted sum of the observations, and we reweight the observations accordingly, in the same manner as before.
-Again, calculate a weight to give to this new classifier, and add it to the previous classifier, such that $F^{[2]}(\cdot)=\hat{\alpha}^{[1]}\hat{h}^{[1]}(\cdot)+\alpha^{[2]}h^{[2]}(\cdot)$.
+Again, calculate a weight to give to this new classifier, and add it to the previous classifier, such that $F^{[2]}(x)=\hat{\alpha}^{[1]}\hat{h}^{[1]}(x)+\alpha^{[2]}h^{[2]}(x)$
 Continue iterating in this fashion until an iteration number $\mstop$ is reached.
 The resulting AdaBoost classifier $\hat{F}(\cdot)$ becomes
 \begin{equation*}
-    \hat{F}(\cdot)=F^{[\mstop]}(\cdot)=\sum_{m=1}^{\mstop}\hat{\alpha}^{[m]}\hat{h}^{[m]}(\cdot),
+    \hat{F}(x)=F^{[m]}(x)=\sum_{m=1}^{\mstop}\hat{\alpha}^{[m]}\hat{h}^{[m]}(x),
 \end{equation*}
 
 i.e. a linear combination of the weak classifiers, or in essence a weighted majority vote of weak learners given the observations.
