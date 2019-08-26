@@ -2,7 +2,7 @@
 \chapter{Methodology} \label{ML}
 
 
-\subsection{Context Of Imputation in Real World Data :}
+\subsection{Context Of Imputation in Real World Data :}\label{contextofimp}
  Continuous time series data is collected by different stations and systems, the missing data can be produced due to the transfer problems or natural disaster that can damage devices (sensors), or any external factor, furthermore this leads us to the question “ How can we impute data that does not exist ? ”, One solution is imputing  data from the nearest neighbor of the damaged sensor, this solution is very dangerous, we will  consider the following example to clear the problem more.
 let S = {s1 s2 s3 s4 } be a set of sensors that is distributed as following s1 is a sensor  that measure the temperature of soil, s2 is a sensor of temperature but in 2km away from S1 in a certain direction but its height is about 10 m above the level of s1 height, s3  is 5km away from s1 that measure also temperature of soil,  s4  is 3km away from s1  and  measures Humidity.
 
@@ -75,11 +75,11 @@ on the other hand one may try only to interpolate using linear interpolation or 
 % \end{figure}
 %%
 
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
-\begin{minipage}{.46\linewidth}
+\begin{minipage}{.49\linewidth}
     \includegraphics[width=.9\textwidth]{img/quadratic.png}    
-    \caption{Imputation using Quadratic Interpolation}
+    \caption{Quadratic Interpolation}
     \label{img1}
 \end{minipage}
 \hfill
@@ -177,15 +177,15 @@ in the next figures we can see the inference of  the best selected model with or
 
 \begin{figure}[H]
 \centering
-\begin{minipage}{.46\linewidth}
+\begin{minipage}{.49\linewidth}
     \includegraphics[width=.9\textwidth]{img/arima_training.png}    
-    \caption{prediction of Arima model on training data}
+    \caption{Arima prediction on training data}
     \label{fig:trainig_arima}
 \end{minipage}
 \hfill
 \begin{minipage}{.49\linewidth}
     \includegraphics[width=.9\textwidth]{img/arima_forcasting.png} 
-    \caption{Arima forecasting}
+    \caption{Arima Forecasting}
     \label{fig:forcasting}
 \end{minipage}
 \end{figure}
@@ -248,7 +248,7 @@ Another way to mark missing data is the time delay between two consecutive non m
 Date is a a valuable data $Days\ ,Hours\ and\ Months$ can not be passed directly in their original form, that will be awfully misleading for our network since our network can not handle on its own the modulo operation. to prevent this problem  from happening we turn data into a cyclic data by decomposing it into pair of cosine and sine.
 All these meta data will give additional information to train on.
 
-As we are going train a large network, we would want to scale our data first between [0-1] in order to converge. and for that we transformed data between values 0 and 1 \cite{Chatterjee2017} using the \textbf{MinMaxScaler} function \cite{scikit2011}.
+As we are going train a large network, we would want to scale our data first between [0-1] in order to converge. and for that we transformed data between values 0 and 1 \cite{Chatterjee2017} using the \textbf{MinMaxScaler} function \ref{eq:MaxMin}.
 %
 \begin{equation}
 \label{eq:MaxMin}
@@ -297,24 +297,30 @@ In the figure below \ref{fig:verbose}, we can see that the test loss is lower th
 \end{figure}
 %
 The trained model is run on the test set which would then collect all predictions and calculate an error score. another metric was calculated for comparison; since RMSE is criticized for its over-biasing when measuring continuous variables.
-\cite{Chai_Draxler_2014}.\\
-next step we can visualize how well our model can predict the target training data, 
+\cite{Chai_Draxler_2014}.\\next step we can visualize how well our model can predict the target training data, 
+%
 \begin{figure}[h]
 \centering
 \includegraphics[scale=.4]{img/prevision_sur_training.png}  
 \caption{prediction on training data set}
 \label{fig:verbose}
 \end{figure}
+%
+%
 \begin{figure}[h]
 \centering
 \includegraphics[scale=.4]{img/prevision_sur_test.png}  
 \caption{prediction on testing  data set}
 \label{fig:verbose}
 \end{figure}
+%
+\newline
+%
 \begin{verbatim}
 MAE : Train Score: 8.25  ,  Test Score: 7.94
 RMSE : Train Score: 9.57  , Test Score: 9.62 
 \end{verbatim}
+%
 As we can see from two figures of the prediction and the two  evaluations metrics (MAE and RMSE) we can judge that the first model with simple layer and 150 neurons, did eventually learn the seasonality and the pattern of data with an RMSE of 9.62 on testing data but still not enough to trust this model on imputing several missing hours. 
 
 Note : one thing we should note, is that even though the MAE of training data is lower than testing data, which is normal in this case  since training data has 80\%  of original data whilst testing data is only 20\% of original data.
@@ -334,8 +340,8 @@ there is one way to solve this problem we suggest to increase the model complexi
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.57\textwidth]{img/stateful_stacked_lstm.png}  
-\caption{stateful Lstm  architecture}
+\includegraphics[width=0.55\textwidth]{img/stateful_stacked_lstm.png}  
+\caption{stateful Lstm  architecture \cite{keras2015}}
 \label{}
 \end{figure}
 we train the new model in the same data set as before and evaluate the error again using RMSE and MAE, we had the following results :
@@ -343,9 +349,8 @@ we train the new model in the same data set as before and evaluate the error aga
 MAE : Train Score: 2.46  ,  Test Score: 2.09.
 RMSE : Train Score: 1.94  , Test Score: 2.02 
 \end{verbatim}
-as we may notice that RMSE significantly dropped by using the stateful lstm architecture with different  number of neurons at each layer\ref{stat_lstm}. the training stopped at 20 epochs the val loss stopped improving. 
-
-\begin{figure}[h]
+as we may notice that RMSE significantly dropped by using the stateful lstm architecture with different  number of neurons at each layer \ref{stat_lstm}. the training stopped at 20 epochs the val loss stopped improving.
+\begin{figure}[!h]
 \centering
 \includegraphics[width=1.05\textwidth]{img/lstm_stateful.png}  
 \caption{The Stateful Lstm model and training loss vs validation Loss }
@@ -357,7 +362,7 @@ in the next figure we will visualize the first 500 of the original data that has
 \begin{figure}[!h]
 \centering
 \includegraphics[scale=.4]{img/best_result.png}  
-\caption{testing the imputation}
+\caption{Testing the imputation}
 \label{fig:verbose}
 \end{figure}
 the problem with our original data is that we can not quantify the error of Imputation phase, because we do not have Real values to compare our results to; in order to validate our model we would need a complete data.
@@ -389,6 +394,12 @@ to get around the " The Curse of dimensionality " we usually use some kind of di
 \caption{Adaboost forecasting}
 \label{fig:adaboost}
 \end{figure}
+
+
+\subsection{Transfer Learning}
+Very much like one's ability to steer a car helps in learning to drive a motorcycle, the knowledge of a model contains by having been trained on one specific task might help in solving a related task.\\This is the general aim of transfer learning: to transfer knowledge from an already trained model to a different domain or a different task.\\ in our use case Transfer learning was never used before to impute missing data for a damaged sensor, it is still a low researched field. Nevertheless, to solve some issues as stated in first section of this chapter \ref{contextofimp}. our proposed solution is to use transfer learning of The nearest Neighbor of the damaged sensor that respect a number of  criterion  such as measuring the same physical property (temperature, humidity...),
+being at the same height, and spatially correlated.
+having trained LSTM for each sensor, we can easily transfer learning of one sensor into another damaged sensor in order to impute in real time.\\ All in all, domain adaptation for IOT sensors, is a fresh idea and needs a lot of experiments on the field. However the idea is already working in a number of fields as "style transfer" for images and art \cite{transferlearning}, NLP openAI released their GPT-2 which made it possible for people to use transfer learning to customize their models, more on this subject on \cite{nlp},   
 
 
 

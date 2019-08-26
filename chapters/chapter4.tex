@@ -13,11 +13,11 @@ First thing in order to impute missing data, we should always know and understan
 
 \section{perspectives and future works }
 
-Stateful Stacked LSTM outperforms all simple lstm and Arima along with others tested models this is a good solution for imputation missing data from past, But what we hope to develop in the future is using future information to impute missing data as we can see in figure \ref{fig:extrapo}  we usually know the non missing values on the end of each gap they are marked with blues in figure below.so extrapolation rather than interpolating seems promising for our future development, However there is a variant called Bidirectional Recurrent neural network, and the idea behind it is using both future information and past information  to predict an event that happened between the past and the future,some researcher as Cao, Wei, \cite{brits} used this architecture to impute missing. 
+Stateful Stacked LSTM outperforms all simple lstm and Arima along with others tested models this is a good solution for imputation missing data from past, But what we hope to develop in the future is using future information to impute missing data as we can see in figure \ref{fig:extrapo}  we usually know the non missing values on the end of each gap they are marked with Red in figure below.so extrapolation rather than interpolating seems promising for our future development, However there is a variant called Bidirectional Recurrent neural network, and the idea behind it is using both future information and past information  to predict an event that happened between the past and the future,some researcher as Cao, Wei, \cite{brits} used this architecture to impute missing. 
 
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
-\includegraphics[width=0.6\textwidth]{img/extrapoalting.png}
+\includegraphics[width=0.7\textwidth]{img/extrapoalting.jpg}
 \caption{the two ending non missing values of a gap}
 \label{fig:extrapo}
 \end{figure}
