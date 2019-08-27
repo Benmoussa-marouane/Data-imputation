@@ -4,42 +4,34 @@
 In this chapter we will review each of Classical approaches, Autoregressive model ARIMA, VAR and Deep learning models, then discuss each model  limitation's and Pros & Cons.
 the data used is a traffic data set with a whole lot of missing data, which gives us a dirty ground to test our models on and benchmark them against each others.\\We will also review some of the models that failed to fulfill our project's needs, Finally we will discuss the possibility of using Transfer Learning to impute missing data in the field in real time.
 
-
-
 \section{Data used}
-the  data used in this project, is a real world traffic data, it was collected from  monitoring stations located between Nancy and  Metz  A31  road ''La Direction Interdépartementale des Routes Est (DIR Est) '', the idea of the project is to study  how  a set of speed limits displays that change in time dependent on a lot of factors, would actually reduce the traffic congestion.
+the  data used in this project, is a real world traffic data, it was collected from  monitoring stations located between Nancy and  Metz  A31  road ''La Direction Interdépartementale Des Routes Est (DIR Est) '', the idea of the project is to study  how  a set of speed limits displays that change in time dependent on a lot of factors, would actually reduce the traffic congestion.
 and for that they took measures of Speed and Flow rate, of course there other Spatial features like the section of sensor (refered to as station), there are also 2 sens and some times 3 sens in a road, and other features that allocate spatially where sensors are.
 but one thing let their Data scientist, struggle to have a conclusion was Missing Data values.
 
-
 \begin{figure}[H]
 \centering
-\includegraphics[scale=.53]{img/grouped_data_descriptives.png} 
-\caption{traffic Dataset descriptive statistics}
+\includegraphics[scale=.5]{img/grouped_data_descriptives.png} 
+\caption{Traffic Dataset descriptive statistics}
 \label{fig:score}
 \end{figure}
 
 
-\section{classical methods :}
-
-the distribution of missing data is not following any pattern, which favor the hypothesis of being Missing at random, which is the case of 90\% in real world data.
-
+\section{Classical Methods :}
+The distribution of missing data is not following any pattern, which favor the hypothesis of being Missing at random, which is the case of 90\% in real world data.
 %
 \begin{figure}[H]
 \centering
-\includegraphics[width=.9\textwidth]{img/missing_values_distributation.png} 
+\includegraphics[width=.63\textwidth]{img/missing_values_distributation.png} 
 \caption{Missing data distribution of all features in Dataset}
 \label{fig:presteps}
 \end{figure}
 %
-
-the naive solution is to impute (fill) missing values using mean values of each feature. which seems reasonable estimate except that this is not safe to use even if your missing observation are completely at random. However, clearly this is not the case we are dealing with, the mean  method may lead to inconsistent bias. 
-
-The figure below shows the imputation  using Mean and Standard Deviation,  here we have a gap of 3 days, No additional information was added, the mean only make  the size of time serie bigger, this leads to an underestimate of the errors [\ref{}].
+the naive solution is to impute (fill) missing values using mean values of each feature. which seems reasonable estimate except that this is not safe to use even if your missing observation are completely at random. However, clearly this is not the case we are dealing with, the mean  method may lead to inconsistent bias.\\The figure below shows the imputation  using Mean and Standard Deviation,  here we have a gap of 3 days, No additional information was added, the mean only make  the size of time serie bigger, this leads to an underestimate of the errors.
 %
 \begin{figure}[H]
 \centering
-\includegraphics[scale=.4]{img/mean_median.png} 
+\includegraphics[scale=.49]{img/mean_median.png} 
 \caption{Mean and standard Deviation imputation}
 \label{fig:presteps}
 \end{figure}
@@ -48,20 +40,17 @@ on the other hand one may try only to interpolate using linear interpolation or 
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=.33]{img/linear.png} 
+\includegraphics[scale=.35]{img/linear.png} 
 \caption{Imputation using Linear Interpolation }
 \label{fig:presteps}
 \end{figure}
-
-
-%
+% %
 % \begin{figure}[H]
 % \centering
 % \includegraphics[width=.75\textwidth]{img/quadratic.png} 
 % \caption{Imputation using Quadratic Interpolation}
 % \label{fig:presteps}
 % \end{figure}
-
 % %
 % \begin{figure}[H]
 % \centering
@@ -69,7 +58,7 @@ on the other hand one may try only to interpolate using linear interpolation or 
 % \caption{Spline interpolation for imputation}
 % \label{fig:presteps}
 % \end{figure}
-%%
+% %
 
 \begin{figure}[h]
 \centering
@@ -89,10 +78,10 @@ on the other hand one may try only to interpolate using linear interpolation or 
 
 Scoring the results and see which is better, we can see from figure below [\ref{fig:score}], that both linear interpolation and interpolation Time is giving the minimum error compared to other methods.
 
-\begin{wrapfigure}{!l}{0.35\textwidth}
+\begin{wrapfigure}{!l}{0.3\textwidth}
 \centering
-\includegraphics[width=.4\textwidth]{img/results_R.png} 
-\caption{Missing data distribution of all features in Dataset}
+\includegraphics[width=.37\textwidth]{img/results_R.png} 
+\caption{R square results of different imputation techniques }
 \label{fig:score}
 \end{wrapfigure}
 we can see clearly how inefficient these methods are and can introduce bias data to work with later or train on.thus, these methods cannot be employed, as they are not  based on inter-variable correlations, neither they take the time dimension into account as a major feature in order to estimate missing values. For instance the interpolation methods tries to fit a “smooth curve” fitting the observed data and this way we approximate the missing values but with a really poor hypothesis that will need a lot of constraints to be true. Also it discards any relationships between the variables over time. Other methods that are usually used for times series predictions ( the autoregressive methods like ARIMA) can hold the answer for our problem.
@@ -103,34 +92,33 @@ as we already mention in state of the art ARIMA is a very famous method for forc
 Box and Jenkins proposed a set of guidelines that can be followed when
 selecting ARIMA models. This systematic procedure to designing ARIMA
 models has made them highly popular (Hibon and Makridakis
-\protect\hyperlink{ref-spyros1997}{1997}).  It consists of a four-stage iterative process in which:
+\cite{Hibonand_Makridakis}).  It consists of a four-stage iterative process in which:
 
 \begin{enumerate}
     \item  the process is either transformed or
-differenced to de-trend\ref{fig:detrend} and stabilise the variance of the data.
+differenced to de-trend \ref{fig:detrend} and stabilise the variance of the data.
  
 
-\begin{figure}[H]
+\begin{figure}[!h]
 \centering
-\includegraphics[scale=.4]{img/detreding.png} 
+\includegraphics[scale=.45]{img/detreding.png} 
 \caption{Remove trend and seasonality with decomposition }
 \label{fig:detrend}
 \end{figure}
 
-\item the autocorrelation and partial autocorrelation plots are used to determine the order of p and q,
-\item the parameters of the model are estimated,
-\item a diagnostic check is performed to ensure that the residuals are a white noise process. If the residuals are not white noise steps 2-4 are repeated until a satisfactory model is identified. On the contrary, if the diagnostic check shows that the residuals are random then the developed model is the final model used for forecasting.
+\item The autocorrelation and partial autocorrelation plots are used to determine the order of p and q,
+\item The parameters of the model are estimated,
+\item A diagnostic check is performed to ensure that the residuals are a white noise process. If the residuals are not white noise steps 2-4 are repeated until a satisfactory model is identified. On the contrary, if the diagnostic check shows that the residuals are random then the developed model is the final model used for forecasting.
 \end{enumerate}
 
 It is important to keep in mind that regression techniques works on  observations that are independent of each other, we know that in time series all variables are time dependent, unless the time serie is Stationary we can not use any regression model.
 
-To do so, we use  Dickey-Fuller test \ref{dickeyfuller}, a statistical test with the null hypothesis that the time series is non-stationary. If the test results in the test statistic significantly less than the critical values, we can reject the null hypothesis in favor of time series stationarity.
-
-as we may see in the figure below \ref{fig:duckeytest} our time serie is stationary :
+To do so, we use  Dickey-Fuller test \cite{dickeyfuller}, a statistical test with the null hypothesis that the time series is non-stationary. If the test results in the test statistic significantly less than the critical values, we can reject the null hypothesis in favor of time series stationary.
+as we may see in the figure below \ref{fig:duckeytest} our Time Serie is stationary :
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=.35]{img/duckeyTest.png} 
+\includegraphics[width=.65\textwidth]{img/duckeyTest.png} 
 \caption{imputation using Linear Interpolation }
 \label{fig:duckeytest}
 \end{figure}
@@ -168,7 +156,7 @@ Print the results of the ARIMA model and plot the residuals as show in figure \r
 
 
 
-in the next figures we can see the inference of  the best selected model with order=(3, 1, 1) and seasonal order=(2, 1, 2, 12). which scored an RMSE of 0.8 on the training data as in fig\ref{fig:trainig_arima}, we can forecast future event by just fitting the Arima model on the last  known data and have a forecasting as shown in figure \ref{fig:forcasting}.  
+in the next figures we can see the inference of  the best selected model with order=(3, 1, 1) and seasonal order=(2, 1, 2, 12). which scored an RMSE of 0.8 on the training data as in fig \ref{fig:trainig_arima}, we can forecast future event by just fitting the Arima model on the last  known data and have a forecasting as shown in figure \ref{fig:forcasting}.  
 
 
 \begin{figure}[H]
@@ -185,20 +173,17 @@ in the next figures we can see the inference of  the best selected model with or
     \label{fig:forcasting}
 \end{minipage}
 \end{figure}
-
 %
 \begin{verbatim}
 MAE : Train Score: 3.48 , Test Score: 2.2
 RMSE : Train Score: 3.53 , Test Score: 3.62
 \end{verbatim}
-
-
-
-now the idea as mentioned before is to go back to each gap and impute as if we want to infer and forecast the gap, The figure shown below shows the results obtained by imputing (filling), missing data by arima forecast.
+%
+Now the idea as mentioned before is to go back to each gap and impute as if we want to infer and forecast the gap, The figure shown below shows the results obtained by imputing (filling), missing data by arima forecast.
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=.2]{img/arima_imputation.png} 
+\includegraphics[scale=.28]{img/arima_imputation.png} 
 \caption{Arima imputation}
 \label{fig:arima_degree}
 \end{figure}
@@ -220,14 +205,14 @@ in  our Benchmarking, the VAR failed badly to fit even the Training Data, this i
 that left us with Deep learning approaches, Time series are sequential data whereas RNN is the state of the art to deal with sequential data.
 \section{Deep learning :}
 \subsection{Building the RNN}
-The RNN used was built on top of Keras API\cite{keras2015} with tensorflow  back-end. we used a variant of RNN called LSTM  that can even learn from larger dependencies, the coming list represents the specifications of the architecture used in this project:
+The RNN used was built on top of Keras API \cite{keras2015} with tensorflow  back-end. we used a variant of RNN called LSTM  that can even learn from larger dependencies, the coming list represents the specifications of the architecture used in this project:
 \begin{itemize}
 \item we used a the Many to one RNN architecture  uses a single output feed forward node as shown in figure \ref{fig:manyto_one}.
 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=.3]{img/many_to_one.png} 
-\caption{input as many time steps in the sequence, but the model produces only one output to predict the t+1 .}
+\caption{input as many time steps in the sequence, but the model produces only one output to predict the t+1.}
 \label{fig:manyto_one}
 \end{figure}
 
@@ -338,13 +323,13 @@ now we will test the model on imputation data set which has  several missing dat
 \label{fig:first_imp}
 \end{figure}
 
-the figure above\ref{fig:first_imp} shows the prediction of our model on the first 100 samples, and we can see that it can be in reasonable range when predicting 1h,2h. more than 3h it seems it starts to give unreasonable results, this is due to the accumulated error we have along with the prediction, in each prediction of t+1 we use the last L samples from past to impute the the future (t+1), but as in every machine learning or deep learning model the prediction always comes with an error (RMSE = 9.57). which means using the predicted values by the model to predict other future samples does have a really bad effect as we may see in the third Big gap in \ref{fig:first_imp}.
+the figure above \ref{fig:first_imp} shows the prediction of our model on the first 100 samples, and we can see that it can be in reasonable range when predicting 1h,2h. more than 3h it seems it starts to give unreasonable results, this is due to the accumulated error we have along with the prediction, in each prediction of t+1 we use the last L samples from past to impute the the future (t+1), but as in every machine learning or deep learning model the prediction always comes with an error (RMSE = 9.57). which means using the predicted values by the model to predict other future samples does have a really bad effect as we may see in the third Big gap in \ref{fig:first_imp}.
 
 there is one way to solve this problem we suggest to increase the model complexity which will allow it to learn to generalize even better and minimize the error and for that we used another architecture  called  stateful stacked LSTM as the next figure will explain this new architecture :
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.55\textwidth]{img/stateful_stacked_lstm.png}  
+\includegraphics[width=0.6\textwidth]{img/stateful_stacked_lstm.png}  
 \caption{stateful Lstm  architecture \cite{keras2015}}
 \label{}
 \end{figure}
@@ -389,25 +374,21 @@ In our experiments we tried other models as Time aware LSTM \cite{timeaware} whi
 unfortunately the T-Lstm failed to fit the training. and was not capable of learning the patterns nor imputing missing data \ref{fig:tlstm}.
 \begin{figure}[H]
 \centering
-\includegraphics[scale=.4]{img/T_lstm.png}  
+\includegraphics[scale=.45]{img/T_lstm.png}  
 \caption{Time aware Lstm failing to learn the pattern of our data.}
 \label{fig:tlstm}
 \end{figure}
 
-another machine learning model we used and already mentioned in state of the art chapter is Adaboost(Adaptive Boosting) can be another good option for either Forecastign time series or even imputing data the only inconvenient we have is that it needs some kind of feature extractor from our time series we used tsfresh\cite{} which provide us with 100 feature to train our model with added to our original time series with One variable (as ARIMA).
+another machine learning model we used and already mentioned in state of the art chapter is Adaboost(Adaptive Boosting) can be another good option for either Forecastign time series or even imputing data the only inconvenient we have is that it needs some kind of feature extractor from our time series we used Tsfresh \cite{tsfresh} which provide us with 100 feature to train our model with added to our original time series with One variable (as ARIMA).
 to get around the " The Curse of dimensionality " we usually use some kind of dimensionality  reduction technics as PCA, SVD or Feature engineer to reduce number of features that can make time of calculations polynomial rather than exponential.
-
 \begin{figure}[!h]
 \centering
 \includegraphics[scale=.6]{img/adaboost_results.png}  
-\caption{Adaboost forecasting}
+\caption{Adaboost Forecasting}
 \label{fig:adaboost}
 \end{figure}
-
-
 \subsection{Transfer Learning}
 Very much like one's ability to steer a car helps in learning to drive a motorcycle, the knowledge of a model contains by having been trained on one specific task might help in solving a related task.\\This is the general aim of transfer learning: to transfer knowledge from an already trained model to a different domain or a different task.\\ in our use case Transfer learning was never used before to impute missing data for a damaged sensor, it is still a low researched field. Nevertheless, to solve some issues as stated in first section of this chapter \ref{contextofimp}. our proposed solution is to use transfer learning of The nearest Neighbor of the damaged sensor that respect a number of  criterion  such as measuring the same physical property (temperature, humidity...),being at the same height, and spatially correlated. having trained LSTM for each sensor, we can easily transfer learning of one sensor into another damaged sensor in order to impute in real time. All in all, domain adaptation for IOT sensors, is a fresh idea and needs a lot of experiments on the field. However the idea is already working in a number of fields as "style transfer" for images and art \cite{transferlearning}, NLP openAI released their GPT-2 which made it possible for people to use transfer learning to customize their models, more on this subject on \cite{nlp},   
-
 
 
 \section{Conclusion}
