@@ -1,8 +1,26 @@
-\chapter*{General Presentation of Problematic} 
-Recently, with the rapid development of  sensors that can take measures in various different fields,From healthcare, Logistic, Traffic Data, Smart Buildings and Industries, Meanwhile, it generates a lot of problems to be solved, and one crucial problem is missing values\cite{dempetrubin}. Most systems can have enormous failure, or bad decision making based on missing data, Or even worst unreliable imputation methods that is biased.\\Missing Data produced by sensors is a very  critical problem to the majority of decision-making systems that impact human health, industrial output, and ecological risk or for any other field where making a decision based on data. Data sets that are corrupted with inaccurate results or missing data can significantly influence summary statistics and their interpretations. Continuous time series data is collected by different stations and systems, the missing data can be produced due to the transfer problems or natural disaster that can damage devices (sensors), or any external factor, furthermore this leads us to the question “ How can we impute data that does not exist ? ”, An important question will raise between statisticians and Data scientists, is when do we have right to impute, in other way what are the cases we have for missing data. Rubin (1976) \cite{rubin} classified missing data problems into three categories. In his theory every data point has some likelihood of being missing. There is a process governing it all usually called Data Mechanism or Response Mechanism.little \& Rubin divided the types of missing data according to the assumptions based on the reasons for the missing data \cite{}.
-Estimation stage, the maximum likelihood estimates are determined for each model parameter. Finally in the diagnostics stage, the residuals are analysed and model comparisons are done. If the model fits well then the standardised residuals behave as an i.i.d. with mean zero and variance one.
-In the next chapter we will go through Some of the famous approaches in  literature about Imputation approaches.
+\chapter{Introduction \&  Problem Statement } 
 
+Recently, there is a rapid development of  sensors which  can take measures from various different fields, such as  healthcare, Logistics, Traffic Data, Smart Buildings and Industries, this resulted in generating a Big Data, However, we can not make insights based on it since most of data is incomplete which presents a crucial problem\cite{dempetrubin}. Moreover, Most systems can have an enormous failure, or unreliable imputation methods that are biased.\\Missing Data produced by sensors is a very  critical problem to the majority of decision-making systems that impact human health, industrial output, and ecological risk and  for various fields. Data sets that are corrupted with inaccurate results or missing data can significantly influence summary statistics and their interpretations. Continuous Time Series data are collected by different stations and systems, A missing data can be a result of data transfer or natural disaster that can damage devices (sensors), or any external factor, furthermore this leads us to the question “ How can we impute data that does not exist ? ”, An important question will be raised between statisticians and Data scientists, is : when do we have the right to impute ?, in other words,  in what circumstances  data can go missing. Rubin \cite{rubin} has  classified missing data problems into three categories. In his theory every data point has some likelihood of being missing. There is a process governing it all usually called Data Mechanism or Response Mechanism.
+
+little \& Rubin divided the types of missing data according to the assumptions based on the reasons for the missing data \cite{}.
+
+in  the estimation phase, the maximum likelihood estimates are determined for each model parameter. 
+Finally in the diagnostics phase, the residuals are analyzed and model comparisons are done. If the model fits well then the standardized residuals behave as an i.i.d. with mean zero and variance one.
+
+To clarify the idea of what we could be facing in real world, we will go through the following practical example,
+
+let S = {S1 S2 S3 S4} be a set of sensors that is distributed as following $S1$ is a sensor  that measures the temperature of soil, $S2$ is a sensor of temperature but in 2km away from $S1$ in a certain direction but its height is about 10 m above the level of $S1$, $S3$  on the other hand is 5km away from $S1$ that measures also temperature of soil,  $S4$  is 3km away from $S1$  and  measures Humidity.
+
+One naive solution is imputing  data from the nearest neighbor of the damaged sensor, this solution is very dangerous, we will  consider the following example to clarify the problem more.
+
+Now in the hypothesis of imputing data of sensor $S1$  using nearest neighbor approach is wrong, because the nearest  sensor is $S2$  that  measures the same physical property (Temperature)  from a 10m height  which is very different from the soil temperature, in this case it would be logical to choose $S3$ even if it is farthest from $S2$. or a combination of $S3$ and $S4$ even if the latter measures different physical quantity (humidity) but it is correlated to temperature, and it can help imputing missing values.
+
+A better solution that we would like to build is a system that is able to choose the right combination of sensors to impute data of a damaged sensor, this system should be able to learn the right correlations needed to impute each sensor, which leads us to using \textbf{Deep learning models like Recurrent Neural Networks} (RNN) and its various architecture, hoping this model will learn the right inter-correlations and predict the right missing values.
+  
+After finding the model that fulfills our requirements, we can transfer its knowledge (\textbf{ Transfer Learning }) in order to impute missing data values of the damaged sensor.
+
+
+In the next chapter we will go through Some of the famous approaches in literature about imputation approaches.
 
 
 

@@ -67,7 +67,7 @@
 % Upper part of the page. The '~' is needed because only works if a paragraph has started.
 \includegraphics[width=0.4\textwidth]{img/logoUniv}~\\[1cm]
 
-\textsc{\LARGE \bfseries University of Burgundy, L2i Laboratory }\\[1.1cm]
+\textsc{\LARGE \bfseries University of Burgundy }\\[1.1cm]
 
 %\textsc{\Large }\\[0.3cm]
 
@@ -79,15 +79,15 @@
 % Title
 \HRule \\[0.1cm]
 
-{\huge \bfseries A comparitve study of Data Imputation using Deep Learning and Statistical Models.\\[0.6cm] }
+{\huge \bfseries A Comparative study of Data Imputation Using Deep Learning and Statistical Models.\\[0.6cm] }
 
 \HRule \\[0.1cm]
 
 \textsc{\bfseries Done By:}\\%[0.1cm]
 \textsc{\large Marouane Benmoussa}\\[0.2cm]
 
-\textsc{\Large \bfseries defended at  :}\\%[0.1cm]
-\textsc{\large 03 septembre 2019}\\[0.1cm]
+\textsc{\Large \bfseries defended on:}\\%[0.1cm]
+\textsc{\large september 03  2019}\\[0.1cm]
 
 %
 %% Author and supervisor
@@ -151,7 +151,11 @@
 % \maketitle\thispagestyle{empty}
 
 \begin{abstract}
-A wide range of IoT devices are continuously  generating  high dimensional incomplete data. A new forecast estimates that there will be 41.6 billion connected IoT devices, or “things,” generating 79.4 \textit{zettabytes (ZB)} of data in 2025, However IOT devices usually suffer from missing data problem which can occurs due to wide range of external and internal reasons such as unstable network communication, bad configuration, or simply environmental factors, or natural disasters, this results in a significantly unreliable analytics, also  we can not rely on this data to backend decision, which is the idea behind \textbf{" data is the new oil "} for all companies and investors nowadays.  Missing data can reduce the statistical power and can produce biased estimates, leading to invalid conclusions. Different imputation techniques exist that allow estimation of data gaps such as carrying the last measurement forward (hot-decking) or substituting the population average for the missing data points. More advanced methods use regression techniques and incorporate multiple variables to provide a best guess for the missing data  most of them failed to give  unbiased Estimation to missing values. For continuous, Time Series data such as traffic data or agriculture and meteorological parameters, a more effective estimation of these gaps can be provided using applied statistics to economic models such as Autoregressive models , ARIMA and VAR,  or Deep Learning techniques. In this project, we used historical hourly  traffic data to train a Recurrent Neural Network with Long Short Term Memory nodes to learn daily and seasonal patterns within.  Recurrent neural networks incorporate near term time steps by unfolding the inputs over the time sequence and sharing network weights throughout the time sequence. Additionally, the sequence fed to the recurrent neural network has fixed order, ensuring that for the individual observation, the sequence follows the order it appeared in. Using traffic data from monitoring stations over three years gathered by  \textsc{La Direction Interdépartementale des Routes Est (DIR Est)}, we train a system to reproduce data with randomly generated data gaps with very low error compared to observed values.
+A wide range of IoT devices are continuously  generating  high dimensional incomplete data. A new forecast estimates that there will be 41.6 billion connected IoT devices, or “things,” generating 79.4 \textit{zettabytes (ZB)} of data in 2025, However IOT devices usually suffer from missing data, which is problem can occurs due to a wide range of external and internal factors such as unstable network communication, bad configuration, or simply environmental circumstances, or natural disasters, this results in a significantly unreliable analytics, also  we can not rely on this data to backend decision, which is the idea behind \textbf{" data is the new oil "} for all companies and investors nowadays.  Missing data can reduce the statistical power and can produce biased estimates, leading to invalid conclusions. Different imputation techniques exist, which allow estimation of data gaps such as carrying the last measurement forward (hot-decking) or substituting the population average for the missing data points. More advanced methods use regression techniques and incorporate multiple variables to provide the best estimation for the missing data.  Most of them failed to give  unbiased Estimation to missing values. 
+
+For continuous data, like Time Series (traffic data or agriculture and meteorological...), a more effective estimation of these gaps can be provided using applied statistics to economic models E.g. Autoregressive models , ARIMA and VAR,or Deep Learning techniques. 
+
+In this project, we used historical hourly  traffic data to train a Recurrent Neural Network with Long-Short-Term-Memory  nodes to learn daily and seasonal patterns within data.  Recurrent Neural Networks incorporate near term time steps by unfolding the inputs over the time sequence and sharing network weights throughout the time sequence. Additionally, the sequence fed to the recurrent neural network has fixed order, ensuring that for the individual observation, the sequence follows the order it appeared in.\\Using traffic data from monitoring stations over three years gathered by  \textsc{La Direction Interdépartementale des Routes Est (DIR Est)}, we trained  a system to reproduce data with randomly generated data gaps with very low error compared to observed values.
 
 \end{abstract}
 
@@ -195,6 +199,8 @@ Dempster A.P. and Rubin D.B. (1983) Introduction pp.3-10, in Incomplete Data in 
  \bibitem{timeaware}
  Baytas, Inci M., et al. "Patient subtyping via time-aware LSTM networks." Proceedings of the 23rd ACM SIGKDD international conference on knowledge discovery and data mining. ACM, 2017.
  
+ \bibitem{var}
+ Lütkepohl, Helmut. Vector autoregressive models. Springer Berlin Heidelberg, 2011.
  \bibitem{brits}
  Cao, Wei, et al. "BRITS: bidirectional recurrent imputation for time series." Advances in Neural Information Processing Systems. 2018.
  
@@ -213,6 +219,9 @@ Dempster A.P. and Rubin D.B. (1983) Introduction pp.3-10, in Incomplete Data in 
  \bibitem{listwise}
  King, G., Honaker, J., Joseph, A. and Scheve, K., 1998, July. List-wise deletion is evil: what to do about missing data in political science. In Annual Meeting of the American Political Science Association, Boston.
 
+\bibitem{Chai2014Willmott2005}
+Chai, Tianfeng, and Roland R. Draxler. "Root mean square error (RMSE) or mean absolute error (MAE)?–Arguments against avoiding RMSE in the literature." Geoscientific model development 7.3 (2014): 1247-1250.
+
 \bibitem{singleimp}
 Kim JO, Curry J. The treatment of missing data in multivariate
 analysis. Sociol Methods Res 1977; 6: 215-41.
@@ -220,6 +229,13 @@ analysis. Sociol Methods Res 1977; 6: 215-41.
 \bibitem{mean}
  Malhotra N. Analyzing marketing research data with incomplete information on the dependent variable. J Mark Res 1987; 24: 74-84.
  
+ \bibitem{dickeyfuller}
+ Cheung, Y.W. and Lai, K.S., 1995. Lag order and critical values of the augmented Dickey–Fuller test. Journal of Business & Economic Statistics, 13(3), pp.277-280.
+ 
+ \bibitem{RaM}
+ Ruppert, D., 2011. Statistics and data analysis for financial engineering (Vol. 13). New York: Springer.
+
+
  \bibitem{Hastings1947}
  Hastings, C., Mosteller, F., Tukey, J.W. and Winsor, C.P., 1947. Low moments for small samples: a comparative study of order statistics. The Annals of Mathematical Statistics, 18(3), pp.413-426.
  \bibitem{brockwell2006introduction}
@@ -234,6 +250,7 @@ analysis. Sociol Methods Res 1977; 6: 215-41.
  
  \bibitem{hist_rnn}
  Hecht-Nielsen, R., 1992. Theory of the backpropagation neural network. In Neural networks for perception (pp. 65-93). Academic Press.
+ 
  
  \bibitem{Graves2013a}
  Graves, A., 2013. Generating sequences with recurrent neural networks. arXiv preprint arXiv:1308.0850.

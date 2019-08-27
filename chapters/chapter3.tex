@@ -1,16 +1,12 @@
-
 \chapter{Methodology} \label{ML}
 
+\section{Introduction :}\label{contextofimp}
+In this chapter we will review each of Classical approaches, Autoregressive model ARIMA, VAR and Deep learning models, then discuss each model  limitation's and Pros & Cons.
+the data used is a traffic data set with a whole lot of missing data, which gives us a dirty ground to test our models on and benchmark them against each others.\\We will also review some of the models that failed to fulfill our project's needs, Finally we will discuss the possibility of using Transfer Learning to impute missing data in the field in real time.
 
-\subsection{Context Of Imputation in Real World Data :}\label{contextofimp}
- Continuous time series data is collected by different stations and systems, the missing data can be produced due to the transfer problems or natural disaster that can damage devices (sensors), or any external factor, furthermore this leads us to the question “ How can we impute data that does not exist ? ”, One solution is imputing  data from the nearest neighbor of the damaged sensor, this solution is very dangerous, we will  consider the following example to clear the problem more.
-let S = {s1 s2 s3 s4 } be a set of sensors that is distributed as following s1 is a sensor  that measure the temperature of soil, s2 is a sensor of temperature but in 2km away from S1 in a certain direction but its height is about 10 m above the level of s1 height, s3  is 5km away from s1 that measure also temperature of soil,  s4  is 3km away from s1  and  measures Humidity.
 
-Now in the hypothesis of imputing data of sensor s1  using nearest neighbor approach if wrong, because the nearest  sensor is s2  that has the same physical property (temperature) is measuring  temperature in 10 m which is very different from the soil temperature, in this case it would be logical to choose s3 even if it is far from s2 . or a combination of s3 and s4 even if this last measure different physical quantity (humidity) but it is correlated to temperature, and it can help imputing missing values.
 
-A better solution that we would like to build is a system that is able to choose the right combination of sensors to impute data of a damaged sensor, this system should be able to learn the right correlations needed to impute each sensor, which leads us to using Deep learning models like Recurrent Neural Networks (RNN) and its various architecture, hoping this model will learns the right inter-correlations and predict the right missing values.
-
-\subsection{Data used}
+\section{Data used}
 the  data used in this project, is a real world traffic data, it was collected from  monitoring stations located between Nancy and  Metz  A31  road ''La Direction Interdépartementale des Routes Est (DIR Est) '', the idea of the project is to study  how  a set of speed limits displays that change in time dependent on a lot of factors, would actually reduce the traffic congestion.
 and for that they took measures of Speed and Flow rate, of course there other Spatial features like the section of sensor (refered to as station), there are also 2 sens and some times 3 sens in a road, and other features that allocate spatially where sensors are.
 but one thing let their Data scientist, struggle to have a conclusion was Missing Data values.
@@ -18,13 +14,13 @@ but one thing let their Data scientist, struggle to have a conclusion was Missin
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=.55]{img/grouped_data_descriptives.png} 
+\includegraphics[scale=.53]{img/grouped_data_descriptives.png} 
 \caption{traffic Dataset descriptive statistics}
 \label{fig:score}
 \end{figure}
 
 
-\subsection{classical methods :}
+\section{classical methods :}
 
 the distribution of missing data is not following any pattern, which favor the hypothesis of being Missing at random, which is the case of 90\% in real world data.
 
@@ -102,7 +98,7 @@ Scoring the results and see which is better, we can see from figure below [\ref{
 we can see clearly how inefficient these methods are and can introduce bias data to work with later or train on.thus, these methods cannot be employed, as they are not  based on inter-variable correlations, neither they take the time dimension into account as a major feature in order to estimate missing values. For instance the interpolation methods tries to fit a “smooth curve” fitting the observed data and this way we approximate the missing values but with a really poor hypothesis that will need a lot of constraints to be true. Also it discards any relationships between the variables over time. Other methods that are usually used for times series predictions ( the autoregressive methods like ARIMA) can hold the answer for our problem.
 
 
-\subsection{ ARIMA (Autoregressive Integrated Moving Average):}
+\section{ ARIMA (Autoregressive Integrated Moving Average):}
 as we already mention in state of the art ARIMA is a very famous method for forcasting in finance and Time Series Data,  
 Box and Jenkins proposed a set of guidelines that can be followed when
 selecting ARIMA models. This systematic procedure to designing ARIMA
@@ -128,7 +124,7 @@ differenced to de-trend\ref{fig:detrend} and stabilise the variance of the data.
 
 It is important to keep in mind that regression techniques works on  observations that are independent of each other, we know that in time series all variables are time dependent, unless the time serie is Stationary we can not use any regression model.
 
-To do so, we use  Dickey-Fuller test \ref{aaaa}, a statistical test with the null hypothesis that the time series is non-stationary. If the test results in the test statistic significantly less than the critical values, we can reject the null hypothesis in favor of time series stationarity.
+To do so, we use  Dickey-Fuller test \ref{dickeyfuller}, a statistical test with the null hypothesis that the time series is non-stationary. If the test results in the test statistic significantly less than the critical values, we can reject the null hypothesis in favor of time series stationarity.
 
 as we may see in the figure below \ref{fig:duckeytest} our time serie is stationary :
 
@@ -151,8 +147,8 @@ Results of Dickey-Fuller Test:
 \end{wraptable}
 
 
-The order of differencing is determined by using the KPSS test (Ruppert and Matteson \protect\hyperlink{ref-ruppert2015}{2015}). The KPSS test checks the null hypothesis of stationarity and sets d to zero if the null hypothesis is accepted, otherwise it iteratively increases d by 1 and tests the null hypothesis until it is accepted (Ruppert and Matteson \protect\hyperlink{ref-ruppert2015}{2015}). Once the order of
-differencing has been determined, the order of p and q are chosen based on Akaike's Information Criterion (AIC) or the Bayesian Information Criterion (BIC) (Ruppert and Matteson \protect\hyperlink{ref-ruppert2015}{2015}).
+The order of differencing is determined by using the KPSS test (Ruppert and Matteson\cite{RaM}). The KPSS test checks the null hypothesis of stationarity and sets d to zero if the null hypothesis is accepted, otherwise it iteratively increases d by 1 and tests the null hypothesis until it is accepted (Ruppert and Matteson \cite{RaM}). Once the order of
+differencing has been determined, the order of p and q are chosen based on Akaike's Information Criterion (AIC) or the Bayesian Information Criterion (BIC).
 
 
 Due to the large number of forecasts made, it is useful to have an
@@ -190,6 +186,14 @@ in the next figures we can see the inference of  the best selected model with or
 \end{minipage}
 \end{figure}
 
+%
+\begin{verbatim}
+MAE : Train Score: 3.48 , Test Score: 2.2
+RMSE : Train Score: 3.53 , Test Score: 3.62
+\end{verbatim}
+
+
+
 now the idea as mentioned before is to go back to each gap and impute as if we want to infer and forecast the gap, The figure shown below shows the results obtained by imputing (filling), missing data by arima forecast.
 
 \begin{figure}[H]
@@ -208,13 +212,13 @@ in  our Benchmarking, the VAR failed badly to fit even the Training Data, this i
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=.2]{img/VAR.png} 
+\includegraphics[width=.5\textwidth]{img/VAR.png} 
 \caption{Vector Autoregressive VAR}
 \label{fig:arima_degree}
 \end{figure}
 
 that left us with Deep learning approaches, Time series are sequential data whereas RNN is the state of the art to deal with sequential data.
-
+\section{Deep learning :}
 \subsection{Building the RNN}
 The RNN used was built on top of Keras API\cite{keras2015} with tensorflow  back-end. we used a variant of RNN called LSTM  that can even learn from larger dependencies, the coming list represents the specifications of the architecture used in this project:
 \begin{itemize}
@@ -272,9 +276,9 @@ Data sets is passed to the LSTM in a 3D tensor, where the first parameter is a b
 \end{figure}
 %
 
-\section{Results \& Expirements}
+\subsection{Results \& Expirements}
 
-\subsection{Training \& Testing phase }
+\subsubsection{Training \& Testing phase }
 After pre-processing our data we were found with 11,508 samples. The organized data was split 80\% Train and 20\%  Test. Fitted  our data in  LSTM network \ref{fig:lstm-150} with total 123,751 trainable par5ameters.
 %
 \begin{figure}[H]
@@ -286,7 +290,7 @@ After pre-processing our data we were found with 11,508 samples. The organized d
 %
 
 we implemented an early callback to stop training before over-fitting if the loss value did not change after 2 epochs, a chart is showing the training set and test set loss during training this way we can monitor the training process.
-In the figure below \ref{fig:verbose}, we can see that the test loss is lower than the training loss that is a good sign to  according to the evaluation model we saw in the previous chapter as we should always follow the bias-variace tradeoff \ref{}.
+In the figure below \ref{fig:verbose}, we can see that the test loss is lower than the training loss that is a good sign to  according to the evaluation model we saw in the previous chapter as we should always follow the bias-variace tradeoff \ref{variance_bias}.
 
 %
 \begin{figure}[h]
@@ -297,7 +301,7 @@ In the figure below \ref{fig:verbose}, we can see that the test loss is lower th
 \end{figure}
 %
 The trained model is run on the test set which would then collect all predictions and calculate an error score. another metric was calculated for comparison; since RMSE is criticized for its over-biasing when measuring continuous variables.
-\cite{Chai_Draxler_2014}.\\next step we can visualize how well our model can predict the target training data, 
+\cite{Chai_Draxler_2014}.\\Next step we can visualize how well our model can predict the target training data, 
 %
 \begin{figure}[h]
 \centering
@@ -334,7 +338,7 @@ now we will test the model on imputation data set which has  several missing dat
 \label{fig:first_imp}
 \end{figure}
 
-the figure above\ref{fig:first_imp} shows the prediction of our model o the first 100 samples, and we can see that it can be in reasonable range when predicting 1h,2h. more than 3h it seems it starts to give unreasonable results, this is due to the accumulated error we have along with the prediction, in each prediction of t+1 we use the last L samples from past to impute the the future (t+1), but as in every machine learning or deep learning model the prediction always comes with an error (RMSE = 9.57). which means using the predicted values by the model to predict other future samples does have a really bad effect as we may see in the third Big gap in \ref{fig:first_imp}.
+the figure above\ref{fig:first_imp} shows the prediction of our model on the first 100 samples, and we can see that it can be in reasonable range when predicting 1h,2h. more than 3h it seems it starts to give unreasonable results, this is due to the accumulated error we have along with the prediction, in each prediction of t+1 we use the last L samples from past to impute the the future (t+1), but as in every machine learning or deep learning model the prediction always comes with an error (RMSE = 9.57). which means using the predicted values by the model to predict other future samples does have a really bad effect as we may see in the third Big gap in \ref{fig:first_imp}.
 
 there is one way to solve this problem we suggest to increase the model complexity which will allow it to learn to generalize even better and minimize the error and for that we used another architecture  called  stateful stacked LSTM as the next figure will explain this new architecture :
 
@@ -352,7 +356,7 @@ RMSE : Train Score: 1.94  , Test Score: 2.02
 as we may notice that RMSE significantly dropped by using the stateful lstm architecture with different  number of neurons at each layer \ref{stat_lstm}. the training stopped at 20 epochs the val loss stopped improving.
 \begin{figure}[!h]
 \centering
-\includegraphics[width=1.05\textwidth]{img/lstm_stateful.png}  
+\includegraphics[width=1.06\textwidth]{img/lstm_stateful.png}  
 \caption{The Stateful Lstm model and training loss vs validation Loss }
 \label{stat_lstm}
 \end{figure}
@@ -380,10 +384,15 @@ The figure below confirms that Stateful stacked Lstm can  maintain even after 4h
 
 stateful Lstm outperform all other models since it can model sequential data very good, can maintain information over time, can handle multiple variables, also can learn linear and non linear dependencies,it can  learn deep features in our data unlike ARIMA and other classical approaches.
 
-\subsection{other tested models:}
-
+\subsection{Time Aware LSTM (T-Lstm) }
 In our experiments we tried other models as Time aware LSTM \cite{timeaware} which is a variant of  LSTM that try to inculde as input the time gaps made and based on the size of the gap we decide how  much the information flow from previous hidden states we are allowed to take in order to predict the next value ahead in the future.\\a more detailed and technical explanation of how T-Lstm work as authors  Baytas, Inci M.\cite{timeaware} explains : \say{Time Aware LSTM (T-LSTM) was designed to handle irregular elapsed times. T-LSTM is proposed to incorporate the elapsed time information into the standard LSTM architecture to be able to capture the temporal dynamics of sequential data with time irregularities. T-LSTM decomposes memory cell into short-term and long-term components, discounts the short-term memory content using a non-increasing function of the elapsed time, and then combines it with the long-term memory}.
-unfortunately the T-Lstm failed to fit the training. and was not capable of learning the patterns nor imputing missing data.
+unfortunately the T-Lstm failed to fit the training. and was not capable of learning the patterns nor imputing missing data \ref{fig:tlstm}.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.4]{img/T_lstm.png}  
+\caption{Time aware Lstm failing to learn the pattern of our data.}
+\label{fig:tlstm}
+\end{figure}
 
 another machine learning model we used and already mentioned in state of the art chapter is Adaboost(Adaptive Boosting) can be another good option for either Forecastign time series or even imputing data the only inconvenient we have is that it needs some kind of feature extractor from our time series we used tsfresh\cite{} which provide us with 100 feature to train our model with added to our original time series with One variable (as ARIMA).
 to get around the " The Curse of dimensionality " we usually use some kind of dimensionality  reduction technics as PCA, SVD or Feature engineer to reduce number of features that can make time of calculations polynomial rather than exponential.
@@ -397,15 +406,31 @@ to get around the " The Curse of dimensionality " we usually use some kind of di
 
 
 \subsection{Transfer Learning}
-Very much like one's ability to steer a car helps in learning to drive a motorcycle, the knowledge of a model contains by having been trained on one specific task might help in solving a related task.\\This is the general aim of transfer learning: to transfer knowledge from an already trained model to a different domain or a different task.\\ in our use case Transfer learning was never used before to impute missing data for a damaged sensor, it is still a low researched field. Nevertheless, to solve some issues as stated in first section of this chapter \ref{contextofimp}. our proposed solution is to use transfer learning of The nearest Neighbor of the damaged sensor that respect a number of  criterion  such as measuring the same physical property (temperature, humidity...),
-being at the same height, and spatially correlated.
-having trained LSTM for each sensor, we can easily transfer learning of one sensor into another damaged sensor in order to impute in real time.\\ All in all, domain adaptation for IOT sensors, is a fresh idea and needs a lot of experiments on the field. However the idea is already working in a number of fields as "style transfer" for images and art \cite{transferlearning}, NLP openAI released their GPT-2 which made it possible for people to use transfer learning to customize their models, more on this subject on \cite{nlp},   
+Very much like one's ability to steer a car helps in learning to drive a motorcycle, the knowledge of a model contains by having been trained on one specific task might help in solving a related task.\\This is the general aim of transfer learning: to transfer knowledge from an already trained model to a different domain or a different task.\\ in our use case Transfer learning was never used before to impute missing data for a damaged sensor, it is still a low researched field. Nevertheless, to solve some issues as stated in first section of this chapter \ref{contextofimp}. our proposed solution is to use transfer learning of The nearest Neighbor of the damaged sensor that respect a number of  criterion  such as measuring the same physical property (temperature, humidity...),being at the same height, and spatially correlated. having trained LSTM for each sensor, we can easily transfer learning of one sensor into another damaged sensor in order to impute in real time. All in all, domain adaptation for IOT sensors, is a fresh idea and needs a lot of experiments on the field. However the idea is already working in a number of fields as "style transfer" for images and art \cite{transferlearning}, NLP openAI released their GPT-2 which made it possible for people to use transfer learning to customize their models, more on this subject on \cite{nlp},   
 
 
 
 \section{Conclusion}
 the reccurent neural networks are good for modeling sequential data whether it is in text data, or Time series, other variants or RNN can be tested also such as  Gated Recurrent Network, which is a variant of the LSTM. There is also the Attention Network that considered now the state of the art in NLP field, which is also a variant of LSTM. and Bidirectional LSTM means allowing information to flow not only from left to right but also of from right to left, the two sides are concatenated, and then make predictions. 
 
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{c|l|l|l|}
+\cline{2-4}
+\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{RMSE \& MAE on Trafic data} & Univariate data & Multivariate data \\ \hline
+\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}Classical Approaches\\ (interpolations,mean,listwise deletion)\end{tabular}} & Not Stable almost Random & Only & No \\ \hline
+\multicolumn{1}{|c|}{\textbf{ARIMA}} & \begin{tabular}[c]{@{}l@{}}MAE : Train Score: 3.48 , Test Score: 2.2\\ RMSE : Train Score: 3.53 , Test Score: 3.62\end{tabular} & Only & No \\ \hline
+\multicolumn{1}{|c|}{\textbf{LSTM}} & \begin{tabular}[c]{@{}l@{}}MAE : Train Score: 8.25 , Test Score: 7.94\\ RMSE : Train Score: 9.57 , Test Score: 9.62\end{tabular} & Yes & Yes \\ \hline
+\multicolumn{1}{|c|}{\textbf{Stacked LSTM}} & \begin{tabular}[c]{@{}l@{}}MAE : Train Score: 2.46 , Test Score: 2.09.\\ RMSE : Train Score: 1.94 , Test Score: 2.02\end{tabular} & Yes & Yes \\ \hline
+\multicolumn{1}{|c|}{\textbf{T-LSTM}} & RMSE : Train Score: 50.8 , Test Score: 56.2 & Yes & yes \\ \hline
+\end{tabular}%
+}
+\caption{summary comparison of some of methods we tested}
+\label{tab:my-table}
+\end{table}
 
 
 

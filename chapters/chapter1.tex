@@ -1,19 +1,22 @@
 
 
-\chapter{Missing DATA Mechanism \& LITERATURE SURVEY} \label{chapter1}
+\chapter{LITERATURE SURVEY} \label{chapter1}
 
 \section{Introduction}
 
-Little and Rubin (2002) \cite{Little2002} group different missing data handling strategies into four categories: Procedures Based on Completely Recorded Units, Weighting Procedures, Imputation-Based Procedures, and Model-Based Procedures \cite{Little2002}. Censored data is often replaced with the lowest value in the sample range or the detection limit of the measuring instrument.
+Little and Rubin \cite{Little2002} group different missing data handling strategies into four categories: Procedures Based on Completely Recorded Units, Weighting Procedures, Imputation-Based Procedures, and Model-Based Procedures \cite{Little2002}. Censored data is often replaced with the lowest value in the sample range or the detection limit of the measuring instrument.
 Outliers, if detected, can be excluded by truncating or removing from the data set, or winsorizing the data by replacing it with the nearest non-outlying data point \cite{Hastings1947}. Missing data can use different imputation techniques. In the next section we will review some of the most used state of the art methods.
 
 
-\section{Types of Missing Data :} 
+\section{ Missing Data Mechanism :} 
 
-\subsection{Missing completely at random :}
+\subsection{Missing 
+completely At Random :}
 
 Missing Completely at Random, MCAR,  refers to the non existence of any relationship between the missingness of the data and the rest of data , The statistical advantage of data that are MCAR is that the analysis remains unbiased. Power may be lost in the design, but the estimated parameters are not biased by the absence of the data.
+\subsection{Missing at Random :}
 Missing at random : Missing at random (MAR) is a more of what we usually find in real world data,  and it refers to the dependency between the missingness and the observed variables only. And not missing data.
+\subsection{Missing Not at Random :}
 Missing not at random : If the characteristic  of missing data  is neither MCAR nor MAR, then they fall into the category of missing not at random (MNAR). (i.e. the value of the variable that's missing is related to the reason it's missing)
 
 \section{ State of The art :}
@@ -76,7 +79,7 @@ In practice, most time series data are non-stationary and so several approaches,
 where $x'_{t}$ is the differenced series. Formally the model is denoted as ARIMA(p,d,q) where p is the order of autoregressive part, d is the degree of differencing and q is the order of moving average. This is also known as a non-seasonal ARIMA model.
 The common method used to determine the parameters in an ARIMA(p,d,q) model is known as the Box-Jenkins approach (\cite{box2015time}) which is a three stage procedure. The three stages are identification, estimation and diagnostic checking. At the identification stage, the values p, d and q are determined by observing the autocorrelation and partial autocorrelation functions of the time series and its differences. At the estimation stage, the maximum likelihood estimates are determined for each model parameter. Finally in the diagnostics stage, the residuals are analysed and model comparisons are done. If the model fits well then the standardised residuals behave as an i.i.d. with mean zero and variance one.
 \subsubsection{Vector Autoregression (VAR) : }
-The vector autoregression (VAR) model extends the idea of univariate autoregression to $k$ time series regressions, where the lagged values of all $k$ series appear as regressors. Put differently, in a VAR model we regress a vector of time series variables on lagged vectors of these variables. As for AR($p$) models, the lag order is denoted by $p$ so the VAR($p$) model of two variables $X_{t}$ and $Y_{t}(k=2)$ is given by the equations  
+The vector autoregression \cite{var} (VAR) model extends the idea of univariate autoregression to $k$ time series regressions, where the lagged values of all $k$ series appear as regressors. Put differently, in a VAR model we regress a vector of time series variables on lagged vectors of these variables. As for AR($p$) models, the lag order is denoted by $p$ so the VAR($p$) model of two variables $X_{t}$ and $Y_{t}(k=2)$ is given by the equations  
 \begin{align*}
   Y_t =& \, \beta_{10} + \beta_{11} Y_{t-1} + \dots + \beta_{1p} Y_{t-p} + \gamma_{11} X_{t-1} + \dots + \gamma_{1p} X_{t-p} + u_{1t}, \\
   X_t =& \, \beta_{20} + \beta_{21} Y_{t-1} + \dots + \beta_{2p} Y_{t-p} + \gamma_{21} X_{t-1} + \dots + \gamma_{2p} X_{t-p} + u_{2t}.
@@ -86,7 +89,7 @@ The $\beta_{s}$ and  $\gamma_{s}$ can be estimated using OLS on each equation.\\
 \subsection{Machine learning \& Deep Learning approaches :}
 
 
-\subsection{Adaboost :}
+\subsubsection{Adaboost :}
 
 
 AdaBoost \cite{adaboost}is an iterative algorithm.
@@ -112,20 +115,21 @@ In practice, it is often used with stumps, which are decision trees with one spl
 in our use case of this approach we will use the regression version.
 
 
-\subsection{Recurrent Neural Networks :}
-Recurrent Neural networks (RNNs) they were based on the work of   \cite{rnn_hist} these Neural networks are  well suited for sequential  data, They are consider the state of the art now for Natural Language Processing, Especially Machine translation \citet{} and Speech recognition \citet{including126speech} with the ability to capture temporal dependencies between variables, a simple Artificial neural network is able to learn linearity and even non linear functions with enough training examples, but one thing it can not perform is including the time in their learning.  RNNs have been used in many time series applications speech recognition (?), electricity forecasting (?)  and weather forecasting.
+\subsubsection{Recurrent Neural Networks :}
+Recurrent Neural networks (RNNs) they were based on the work of   \cite{rnn_hist} these Neural networks are  well suited for sequential  data, They are consider the state of the art now for Natural Language Processing, Especially Machine translation \citet{} and Speech recognition \cite{including126speech} with the ability to capture temporal dependencies between variables, a simple Artificial neural network is able to learn linearity and even non linear functions with enough training examples, but one thing it can not perform is including the time in their learning.  RNNs have been used in many time series applications speech recognition, electricity forecasting and weather forecasting.
 A recurrent neural network is a feed forward neural network with additional connections between the nodes in each hidden layer called recurrent connections. These recurrent connections, connect the weighted output of each hidden node to another hidden node across a single time step. It is important to note that these recurrent connections do not form cycles within a single time step. The weights carried by these recurrent edges represent state that is remembered from one time step to the next and it is through this state that the recurrent neural network learns to infer context\cite{DBLP:journals/corr/Lipton15}.
 Figure \ref{fig:recurrent-neural-network} (a) shows a recurrent neural network with one input unit, one output unit and a hidden layer with two units. It also shows the recurrent connections in the hidden layer. Each node in the hidden layer receives inputs from the data point $x$ and from each hidden unit $h$ in the previous time step. Figure \ref{fig:recurrent-neural-network} (b) show the same recurrent neural network that is unfolded into two time steps. Notice that the recurrent connections are no longer depicted as cyclic connections.
 
-\subsubsection{Recurrent Neural Networks}
 \begin{figure}
 \centering	
-\includegraphics[width=0.8\textwidth]{recurrent-neural-network}
+\includegraphics[width=0.9\textwidth]{recurrent-neural-network}
 \caption{A recurrent neural network with one hidden layer consisting of two units (a). The same neural network in (a) that is unfolded into two time steps (b).}
 \label{fig:recurrent-neural-network}
 \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%
 
 \subsubsection{Long Short-Term Memory Units}
-RNNs encounter difficulties when modeling arbitrary long sequences. When training RNNs on longer sequences the internal weights become too small to be able to capture any context. This is know as the vanishing gradient problem and long short-term memory units (LSTMs) were introduced to overcome this problem\cite{DBLP:journals/corr/Lipton15}. LSTMs employ gating elements that select which parts of the context the unit should "remember" and the parts that it should "forget"\cite{LSTM}.
-The use of LSTM in RNN architecture allows long term dependencies in data to be remembered within the model \cite{Graves2013a}, a feature that can be exploited to predict the next value of the sequence. If the predicted value is equal to or within a reasonable range of the observed value, the observed value can be assumed to be valid. The observed value is missing or fails an outlier test, the predicted value replaces the missing value and becomes part of the input to the next sequence test.
+RNNs encounter difficulties when modeling arbitrary long sequences. When training RNNs on longer sequences the internal weights become too small to be able to capture any context. This is know as the vanishing gradient problem and long short-term memory units (LSTMs) were introduced to overcome this problem\cite{DBLP:journals/corr/Lipton15}. LSTMs employ gating elements that select which parts of the context the unit should "remember" and the parts that it should "forget"\cite{LSTM}.\\The use of LSTM in Recurrent architectures is it allows long term dependencies in data to be remembered within the model \cite{Graves2013a}, a feature that can be exploited to predict the next value of the sequence. If the predicted value is equal to or within a reasonable range of the observed value, the observed value can be assumed to be valid. The observed value is missing or fails an outlier test, the predicted value replaces the missing value and becomes part of the input to the next sequence test.
+
+\section{Conclusion:}
+In this chapter, we provided an overview on missing data mechanism and what each category can introduce in term of bias. we also talked about some methods that are necessary for the rest of this project.

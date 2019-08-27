@@ -1,9 +1,9 @@
 
 \chapter{Discussion and Recommendations} \label{hgr}
 
-\section{Discussion  }
+\section{Discussion }
 
-In this work, we performed a benchmarking of statistical methods and deep learning predictive  models, we showed that most of models fail to perform well on imputation task. However, they perform very well in other areas of artificial intelligence.
+In this work, we performed a benchmarking of statistical methods and deep learning predictive  models, we showed that most of models failed to perform well on imputation task. However, they perform very well in other areas of artificial intelligence.
 
 ARIMA has a good predictive effect on short-term forecasts, while LSTM has a good predictive effect on long-term models. to summarize Arima's way to deal with sequential data, focuses on univariate data with linear relationships and fixed lag  diagnostic time dependence,also studying the correlation between observations at different times, which requires analysis and interpretation of the number of lag observations. therefore it is suitable to use ARIMA  when we have to deal with small datasets, from our experimentation we found that arima performance decrease when working with a large data sets. On the other hand, Recurrent Neural Network especially LSTM seems to be more suitable for large datasets. Mainly this is due to  the fact that deep learning  provide a way to divide data  into smaller batches and train them in multiple stages allow the network to learn deep features,and able to lean temporal dependencies from context by observing the sequence from a certain time, additionally lstm  can model complex multivariate sequences.\\LSTM is undoubtedly more complex and difficult to train, and in most cases its performance will  exceed the performance of a simple ARIMA model.\\Machine learning and deep learning methods have not yet fulfilled their promise of univariate time series prediction, and there is still much to be done in this area.
 
@@ -17,13 +17,12 @@ Stateful Stacked LSTM outperforms all simple lstm and Arima along with others te
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.7\textwidth]{img/extrapoalting.jpg}
-\caption{the two ending non missing values of a gap}
+\includegraphics[scale=0.5]{img/extrapoalting.jpg}
+\caption{the two Non Missing Values Of A Gap}
 \label{fig:extrapo}
 \end{figure}
 
-Yet another type of architecture we did not study in this project is Non-Autoregressive, since  autoregressive models  suffer from error propagation which becomes catastrophic for imputing long-range sequences, instead we can use  deep generative models. as in the following paper that was published on may 2019 under the name NAOMI: Non-Autoregressive Multiresolution
-Sequence Imputation. \cite{naomi}.
+Yet another type of architecture we did not study in this project is Non-Autoregressive, since  autoregressive models  suffer from error propagation which becomes catastrophic for imputing long-range sequences, instead we can use  deep generative models, as in the following paper that was published on may 2019 under the name NAOMI: Non-Autoregressive Multiresolution Sequence Imputation\cite{naomi}.
 
 
 
